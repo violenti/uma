@@ -8,7 +8,7 @@
 
 int val = 0; //value for storing moisture value 
 int soilPin = A0;//Declare a variable for the soil moisture sensor 
-const int button = 16; 
+const int button = 16;  // pin D0
 
 void setup() {
   // put your setup code here, to run once:
