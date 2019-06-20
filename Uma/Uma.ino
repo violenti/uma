@@ -38,14 +38,12 @@ void callback(char* topic, byte* payload, unsigned int length) {
 void reconnect() {
   // Loop until we're reconnected
   while (!client.connected()) {
-    Serial.print("Attempting MQTT connection...");
     // Attempt to connect
-    if (client.connect("arduinoClient")) {
-      Serial.println("connected");
+    if (client.connect("Uma")) {
       // Once connected, publish an announcement...
-      client.publish("outTopic","hello world");
-      // ... and resubscribe
-      client.subscribe("inTopic");
+      // ... and resubscribe 
+      Serial.print("OK connect \n");
+
     } else {
       Serial.print("failed, rc=");
       Serial.print(client.state());
@@ -120,7 +118,7 @@ void loop() {
       delay (20000);
          
           snprintf (moisture, 50, ":" "%ld",Moisture);
-           Serial.print("Publish message: ");
+           Serial.print("Publish message: \n");
              client.publish("moisture", moisture);
 
               snprintf (Temperature, 50, ":" "%ld", temp);
