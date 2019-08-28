@@ -1,7 +1,6 @@
-# Uma 
-
-## Uma is a small sensor for plant
-
+ #Uma is a small sensor for plant
+ 
+ 
 
 
 
