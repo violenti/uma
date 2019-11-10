@@ -1,0 +1,63 @@
+version: "3"
+services:
+
+  influxdb:
+
+    image: influxdb:1.7.8-alpine
+    container_name: influxdb
+    ports:
+      - "8083:8083"
+      - "8086:8086"
+      - "8090:8090"
+    networks:
+      - mqtt
+    env_file:
+      - 'env.influxdb'
+    volumes:
+    # Data persistency
+    # sudo mkdir -p /srv/docker/influxdb/data
+      - /srv/docker/influxdb/data:/var/lib/influxdb
+
+  telegraf:
+    image: telegraf:1.12.4-alpine
+    container_name: telegraf
+    links:
+      - influxdb
+    networks:
+      - mqtt
+    volumes:
+      - ./telegraf.conf:/etc/telegraf/telegraf.conf:ro
+
+  grafana:
+    image: grafana/grafana:6.4.4
+    container_name: grafana
+    ports:
+      - "3000:3000"
+    networks:
+      - mqtt
+    env_file:
+      - 'env.grafana'
+    user: "0"
+    links:
+      - influxdb
+    volumes:
+    # Data persistency
+    # sudo mkdir -p /srv/docker/grafana/data; chown 472:472 /srv/docker/grafana/data
+      - /srv/docker/grafana/data:/var/lib/grafana
+  mosquitto:
+    image: eclipse-mosquitto:1.6.7
+    hostname: mosquitto
+    container_name: mosquitto
+    expose:
+      - "1883"
+      - "9001"
+    ports:
+      - "1883:1883"
+      - "9001:9001"
+    networks:
+      - mqtt
+    volumes:
+      - ./mosquitto/mosquitto.conf:/mosquitto/config/mosquitto.conf
+networks:
+  mqtt:
+     
